@@ -9,6 +9,7 @@ import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
 public class Frame extends javax.swing.JFrame {
+    int counter = 0;
 
     public Frame() {
         initComponents();
@@ -270,48 +271,57 @@ public class Frame extends javax.swing.JFrame {
     }
 
     public void loginAction(String username, String password){
-        int role = main.sqlite.getUserRole(username).get(0);
+        if(counter <= 5) {
+            int role = main.sqlite.getUserRole(username).get(0);
+    
+            String rightPass = main.sqlite.getPassword(username, password).toString();
+            
+            if(role != 0 && rightPass.equals(password)){
+                switch (role) {
+                    case 1:
+                    JOptionPane.showMessageDialog(null, "Your Account is Disabled!",
+                    "Error!", JOptionPane.ERROR_MESSAGE);
+                    System.out.println("Your account is disabled!");
+                    loginNav();
+                    break;
+                    case 2:
+                    staffBtn.setEnabled(false);
+                    adminBtn.setEnabled(false);
+                    managerBtn.setEnabled(false);
+                    mainNav();
+                    break;
+                    case 3:
+                    clientBtn.setEnabled(false);
+                    adminBtn.setEnabled(false);
+                    managerBtn.setEnabled(false);
+                    mainNav();
+                    break;
+                    case 4:
+                    clientBtn.setEnabled(false);
+                    staffBtn.setEnabled(false);
+                    adminBtn.setEnabled(false);
+                    mainNav();
+                    break;
+                    case 5:
+                    clientBtn.setEnabled(false);
+                    staffBtn.setEnabled(false);
+                    managerBtn.setEnabled(false);
+                    mainNav();
+                    break;
+                }
+            }
 
-        String rightPass = main.sqlite.getPassword(username, password).toString();
-        
-        if(role != 0 && rightPass.equals(password)){
-            switch (role) {
-                case 1:
-                JOptionPane.showMessageDialog(null, "Your Account is Disabled!",
+            else{
+                counter++;
+
+                JOptionPane.showMessageDialog(null, "Username or Password is Incorrect!",
                 "Error!", JOptionPane.ERROR_MESSAGE);
-                System.out.println("Your account is disabled!");
-                loginNav();
-                break;
-                case 2:
-                staffBtn.setEnabled(false);
-                adminBtn.setEnabled(false);
-                managerBtn.setEnabled(false);
-                mainNav();
-                break;
-                case 3:
-                clientBtn.setEnabled(false);
-                adminBtn.setEnabled(false);
-                managerBtn.setEnabled(false);
-                mainNav();
-                break;
-                case 4:
-                clientBtn.setEnabled(false);
-                staffBtn.setEnabled(false);
-                adminBtn.setEnabled(false);
-                mainNav();
-                break;
-                case 5:
-                clientBtn.setEnabled(false);
-                staffBtn.setEnabled(false);
-                managerBtn.setEnabled(false);
-                mainNav();
-                break;
             }
         }
 
-        else{
-            JOptionPane.showMessageDialog(null, "Username or Password is Incorrect!",
-            "Error!", JOptionPane.ERROR_MESSAGE);
+        else {
+            JOptionPane.showMessageDialog(null, "You have exceeded the number of maximum attempts! Please wait for 10 mins",
+            "Error!", JOptionPane.ERROR_MESSAGE);   
         }
     }
 

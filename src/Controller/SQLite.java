@@ -317,7 +317,7 @@ public class SQLite {
         String passwords = "name";
 
         int isUser = 0;
-
+    
         try (Connection conn = DriverManager.getConnection(driverURL);
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql)) {
@@ -332,7 +332,7 @@ public class SQLite {
         else {
             JOptionPane.showMessageDialog(null, "This User Does Not Exist!",
             "Error!", JOptionPane.ERROR_MESSAGE);
-
+            
             return passwords; }
     }
     
