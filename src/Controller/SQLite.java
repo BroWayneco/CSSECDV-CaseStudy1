@@ -181,22 +181,27 @@ public class SQLite {
         }
     }
     
-    public void addUser(String username, String password) {
-        String sql = "INSERT INTO users(username,password) VALUES('" + username + "','" + password + "')";
-        
-        try (Connection conn = DriverManager.getConnection(driverURL);
-            Statement stmt = conn.createStatement()){
-            stmt.execute(sql);
+    public void addUser(String username, String password, String confpass) {
+        if(username.length() > 0 && password.length() > 0 && password.equals(confpass)) {
+            String sql = "INSERT INTO users(username,password) VALUES('" + username + "','" + password + "')";
             
+            try (Connection conn = DriverManager.getConnection(driverURL);
+                Statement stmt = conn.createStatement()){
+                stmt.execute(sql);
+        
 //      PREPARED STATEMENT EXAMPLE
 //      String sql = "INSERT INTO users(username,password) VALUES(?,?)";
 //      PreparedStatement pstmt = conn.prepareStatement(sql)) {
 //      pstmt.setString(1, username);
 //      pstmt.setString(2, password);
 //      pstmt.executeUpdate();
-        } catch (Exception ex) {
+        }  catch (Exception ex) {
             System.out.print(ex);
-        }
+        }}
+
+        else {
+            JOptionPane.showMessageDialog(null, "Username and Password Cannot be Empty!",
+            "Error!", JOptionPane.ERROR_MESSAGE);}
     }
     
     
@@ -300,11 +305,35 @@ public class SQLite {
 
         if(isUser == 1)
             return roles;
-        else
+        else {
             JOptionPane.showMessageDialog(null, "This User Does Not Exist!",
             "Error!", JOptionPane.ERROR_MESSAGE);
 
-            return roles0;
+            return roles0; }
+    }
+
+    public String getPassword(String username, String password) {
+        String sql = "SELECT password FROM users WHERE username='" + username + "';";
+        String passwords = "name";
+
+        int isUser = 0;
+
+        try (Connection conn = DriverManager.getConnection(driverURL);
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql)) {
+                if (rs.next()){
+                    isUser = 1;
+                    passwords = (rs.getString("password"));
+                } 
+        } catch (Exception ex) {}
+
+        if(isUser == 1)
+            return passwords;
+        else {
+            JOptionPane.showMessageDialog(null, "This User Does Not Exist!",
+            "Error!", JOptionPane.ERROR_MESSAGE);
+
+            return passwords; }
     }
     
     public void addUser(String username, String password, int role) {
