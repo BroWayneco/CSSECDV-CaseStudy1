@@ -4,6 +4,8 @@ import Controller.Main;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Dimension;
+
+import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
 public class Frame extends javax.swing.JFrame {
@@ -200,6 +202,10 @@ public class Frame extends javax.swing.JFrame {
     }//GEN-LAST:event_clientBtnActionPerformed
 
     private void logoutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutBtnActionPerformed
+        clientBtn.setEnabled(true);
+        staffBtn.setEnabled(true);
+        managerBtn.setEnabled(true);
+        adminBtn.setEnabled(true);
         frameView.show(Container, "loginPnl");
     }//GEN-LAST:event_logoutBtnActionPerformed
 
@@ -268,8 +274,11 @@ public class Frame extends javax.swing.JFrame {
 
         switch (role) {
             case 1:
+            JOptionPane.showMessageDialog(null, "Your Account is Disabled!",
+            "Error!", JOptionPane.ERROR_MESSAGE);
               System.out.println("Your account is disabled!");
               loginNav();
+              break;
             case 2:
               staffBtn.setEnabled(false);
               adminBtn.setEnabled(false);
@@ -277,15 +286,21 @@ public class Frame extends javax.swing.JFrame {
               mainNav();
               break;
             case 3:
+              clientBtn.setEnabled(false);
               adminBtn.setEnabled(false);
               managerBtn.setEnabled(false);
               mainNav();
               break;
             case 4:
+              clientBtn.setEnabled(false);
+              staffBtn.setEnabled(false);
               adminBtn.setEnabled(false);
               mainNav();
               break;
             case 5:
+              clientBtn.setEnabled(false);
+              staffBtn.setEnabled(false);
+              managerBtn.setEnabled(false);
               mainNav();
               break;
           }

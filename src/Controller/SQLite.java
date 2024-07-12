@@ -11,6 +11,8 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 public class SQLite {
     
     public int DEBUG_MODE = 0;
@@ -282,15 +284,27 @@ public class SQLite {
     public ArrayList<Integer> getUserRole(String username) {
         String sql = "SELECT role FROM users WHERE username='" + username + "';";
         ArrayList<Integer> roles = new ArrayList<Integer>();
+        ArrayList<Integer> roles0 = new ArrayList<Integer>() ;
+        roles0.add(0);
+
+        int isUser = 0;
 
         try (Connection conn = DriverManager.getConnection(driverURL);
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql)) {
-                while (rs.next()){
+                if (rs.next()){
+                    isUser = 1;
                     roles.add(rs.getInt("role"));
-                }
+                } 
         } catch (Exception ex) {}
-        return roles;
+
+        if(isUser == 1)
+            return roles;
+        else
+            JOptionPane.showMessageDialog(null, "This User Does Not Exist!",
+            "Error!", JOptionPane.ERROR_MESSAGE);
+
+            return roles0;
     }
     
     public void addUser(String username, String password, int role) {
