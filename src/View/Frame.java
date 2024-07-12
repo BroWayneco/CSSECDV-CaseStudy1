@@ -222,6 +222,9 @@ public class Frame extends javax.swing.JFrame {
     private CardLayout contentView = new CardLayout();
     private CardLayout frameView = new CardLayout();
     
+    private long currTime = 0;
+    private long endTime = 0;
+
     public void init(Main controller){
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setTitle("CSSECDV - SECURITY Svcs");
@@ -313,6 +316,9 @@ public class Frame extends javax.swing.JFrame {
 
             else{
                 counter++;
+                
+                if(counter > 5)
+                    currTime = System.currentTimeMillis();
 
                 JOptionPane.showMessageDialog(null, "Username or Password is Incorrect!",
                 "Error!", JOptionPane.ERROR_MESSAGE);
@@ -322,6 +328,14 @@ public class Frame extends javax.swing.JFrame {
         else {
             JOptionPane.showMessageDialog(null, "You have exceeded the number of maximum attempts! Please wait for 10 mins",
             "Error!", JOptionPane.ERROR_MESSAGE);   
+            
+            endTime = System.currentTimeMillis();
+
+            long timeElapsed = endTime - currTime;
+
+            if(timeElapsed > 60000) 
+                counter = 0; 
+        
         }
     }
 
