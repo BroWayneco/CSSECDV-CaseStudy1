@@ -278,6 +278,20 @@ public class SQLite {
         } catch (Exception ex) {}
         return users;
     }
+
+    public ArrayList<Integer> getUserRole(String username) {
+        String sql = "SELECT role FROM users WHERE username='" + username + "';";
+        ArrayList<Integer> roles = new ArrayList<Integer>();
+
+        try (Connection conn = DriverManager.getConnection(driverURL);
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql)) {
+                while (rs.next()){
+                    roles.add(rs.getInt("role"));
+                }
+        } catch (Exception ex) {}
+        return roles;
+    }
     
     public void addUser(String username, String password, int role) {
         String sql = "INSERT INTO users(username,password,role) VALUES('" + username + "','" + password + "','" + role + "')";

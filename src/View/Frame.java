@@ -263,6 +263,35 @@ public class Frame extends javax.swing.JFrame {
         main.sqlite.addUser(username, password);
     }
 
+    public void loginAction(String username){
+        int role = main.sqlite.getUserRole(username).get(0);
+
+        switch (role) {
+            case 1:
+              System.out.println("Your account is disabled!");
+              loginNav();
+            case 2:
+              staffBtn.setEnabled(false);
+              adminBtn.setEnabled(false);
+              managerBtn.setEnabled(false);
+              mainNav();
+              break;
+            case 3:
+              adminBtn.setEnabled(false);
+              managerBtn.setEnabled(false);
+              mainNav();
+              break;
+            case 4:
+              adminBtn.setEnabled(false);
+              mainNav();
+              break;
+            case 5:
+              mainNav();
+              break;
+          }
+        
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Container;
     private javax.swing.JPanel Content;

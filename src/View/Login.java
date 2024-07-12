@@ -1,10 +1,21 @@
 
 package View;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+
+import Controller.SQLite;
+import Model.User;
+
 public class Login extends javax.swing.JPanel {
 
     public Frame frame;
-    
+
+    public SQLite sqlite;
+
     public Login() {
         initComponents();
     }
@@ -83,6 +94,7 @@ public class Login extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
     private void loginBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginBtnActionPerformed
+        frame.loginAction(usernameFld.getText());
         frame.mainNav();
     }//GEN-LAST:event_loginBtnActionPerformed
 
