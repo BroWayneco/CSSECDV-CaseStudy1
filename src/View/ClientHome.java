@@ -46,7 +46,7 @@ public class ClientHome extends javax.swing.JPanel {
         Content.add(mgmtLogs, "mgmtLogs");
         
 //        UNCOMMENT TO DISABLE BUTTONS
-        historyBtn.setEnabled(false);
+//       historyBtn.setEnabled(false);
         usersBtn.setEnabled(false);
 //        productsBtn.setVisible(false);
         logsBtn.setEnabled(false);
