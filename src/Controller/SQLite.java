@@ -380,23 +380,58 @@ public class SQLite {
         try (Connection conn = DriverManager.getConnection(driverURL);
             Statement stmt = conn.createStatement()) {
             stmt.execute(sql);
-            System.out.println("User " + username + " has been disabled.");
+            System.out.println("User " + username + " role has been changed to " + role);
         } catch (Exception ex) {
             System.out.print(ex);
         }
     }
 
-    public String getCurrentUser(String username) {
-        String sql = "SELECT username FROM users WHERE username='" + username + "';";
+    public void editProduct(String name, int stock, double price, String origName) {
+        String firstName = origName;
+        String sql = "UPDATE product SET stock = '" + stock + "'WHERE name ='" + name + "';";
+    
+        try (Connection conn = DriverManager.getConnection(driverURL);
+            Statement stmt = conn.createStatement()) {
+            stmt.execute(sql);
+            System.out.println("Product " + name + " has been changed.");
+        } 
+        catch (Exception ex) {
+            System.out.print(ex);
+        }
+
+        sql =  "UPDATE product SET price = '" + price+ "'WHERE name ='" + name + "';";
 
         try (Connection conn = DriverManager.getConnection(driverURL);
             Statement stmt = conn.createStatement()) {
             stmt.execute(sql);
-            System.out.println("User " + username + " is currently logged in.");
+            System.out.println("Product " + name + " has been changed.");
+        } 
+        catch (Exception ex) {
+                System.out.print(ex);
+            }
+
+        sql = "UPDATE product SET name = '" + name + "'WHERE name ='" + firstName + "';";
+        
+
+        try (Connection conn = DriverManager.getConnection(driverURL);
+            Statement stmt = conn.createStatement()) {
+            stmt.execute(sql);
+            System.out.println("Product " + name + " has been changed.");
+        } 
+        catch (Exception ex) {
+                System.out.print(ex);
+            }
+    }
+
+    public void removeProduct(String productName) {
+        String sql = "DELETE FROM product WHERE name='" + productName + "';";
+
+        try (Connection conn = DriverManager.getConnection(driverURL);
+            Statement stmt = conn.createStatement()) {
+            stmt.execute(sql);
+            System.out.println("Product " + productName + " has been deleted.");
         } catch (Exception ex) {
             System.out.print(ex);
         }
-
-        return username;
     }
 }

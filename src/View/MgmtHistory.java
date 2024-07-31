@@ -224,6 +224,10 @@ public class MgmtHistory extends javax.swing.JPanel {
        roleNumber = role;
     }
 
+    public javax.swing.JButton getSearchBtn() {
+        return searchBtn;
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton reloadBtn;

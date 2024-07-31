@@ -7,7 +7,11 @@ package View;
 
 import Controller.SQLite;
 import Model.Product;
+
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
+
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -21,6 +25,7 @@ public class MgmtProduct extends javax.swing.JPanel {
 
     public SQLite sqlite;
     public DefaultTableModel tableModel;
+    private String userName;
     
     public MgmtProduct(SQLite sqlite) {
         initComponents();
@@ -186,6 +191,8 @@ public class MgmtProduct extends javax.swing.JPanel {
 
             if (result == JOptionPane.OK_OPTION) {
                 System.out.println(stockFld.getText());
+
+                sqlite.addHistory(userName, tableModel.getValueAt(table.getSelectedRow(), 0).toString(), Integer.parseInt(stockFld.getText()), new Timestamp(new Date().getTime()).toString());
             }
         }
     }//GEN-LAST:event_purchaseBtnActionPerformed
@@ -209,6 +216,8 @@ public class MgmtProduct extends javax.swing.JPanel {
             System.out.println(nameFld.getText());
             System.out.println(stockFld.getText());
             System.out.println(priceFld.getText());
+
+            sqlite.addProduct(nameFld.getText(), Integer.parseInt(stockFld.getText()), Double.parseDouble(priceFld.getText()));
         }
     }//GEN-LAST:event_addBtnActionPerformed
 
@@ -232,6 +241,8 @@ public class MgmtProduct extends javax.swing.JPanel {
                 System.out.println(nameFld.getText());
                 System.out.println(stockFld.getText());
                 System.out.println(priceFld.getText());
+
+                sqlite.editProduct(nameFld.getText(), Integer.parseInt(stockFld.getText()), Double.parseDouble(priceFld.getText()), tableModel.getValueAt(table.getSelectedRow(), 0).toString());
             }
         }
     }//GEN-LAST:event_editBtnActionPerformed
@@ -242,6 +253,8 @@ public class MgmtProduct extends javax.swing.JPanel {
             
             if (result == JOptionPane.YES_OPTION) {
                 System.out.println(tableModel.getValueAt(table.getSelectedRow(), 0));
+
+                sqlite.removeProduct(tableModel.getValueAt(table.getSelectedRow(), 0).toString());
             }
         }
     }//GEN-LAST:event_deleteBtnActionPerformed
@@ -261,7 +274,11 @@ public class MgmtProduct extends javax.swing.JPanel {
     public javax.swing.JButton getPurchaseBtn() {
         return purchaseBtn;
     }
-
+    
+    public void setUser (String username) {
+        userName = username;
+     }
+     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addBtn;
     private javax.swing.JButton deleteBtn;

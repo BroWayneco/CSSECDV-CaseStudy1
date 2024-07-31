@@ -278,7 +278,6 @@ public class Frame extends javax.swing.JFrame {
         if(counter <= 5) {
             int role = main.sqlite.getUserRole(username).get(0);
             
-            System.out.println(main.sqlite.getCurrentUser(username));
             String rightPass = main.sqlite.getPassword(username, password).toString();
             
             if(role != 0 && rightPass.equals(password)){
@@ -304,7 +303,9 @@ public class Frame extends javax.swing.JFrame {
                     clientHomePnl.mgmtProduct.getEditBtn().setVisible(false);
 
                     clientHomePnl.mgmtHistory.setUser(username, role);
-                    
+                    clientHomePnl.mgmtProduct.setUser(username);
+                    clientHomePnl.mgmtHistory.getSearchBtn().setVisible(false);
+
                     mainNav();
                     break;
                     
