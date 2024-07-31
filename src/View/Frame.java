@@ -225,6 +225,7 @@ public class Frame extends javax.swing.JFrame {
     
     private long currTime = 0;
     private long endTime = 0;
+    int isDisabled = 0;
 
     public void init(Main controller){
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -283,7 +284,7 @@ public class Frame extends javax.swing.JFrame {
             if(role != 0 && rightPass.equals(password)){
                 switch (role) {
                     case 1:
-                    JOptionPane.showMessageDialog(null, "Your Account is Disabled!",
+                    JOptionPane.showMessageDialog(null, "Your Account is Disabled! Please Contact an Administrator",
                     "Error!", JOptionPane.ERROR_MESSAGE);
                     System.out.println("Your account is disabled!");
                     loginNav();
@@ -351,7 +352,7 @@ public class Frame extends javax.swing.JFrame {
                 }
             }
 
-            else{
+            else if(!rightPass.equals(password)){
                 counter++;
                 
                 if(counter > 5)
@@ -363,17 +364,28 @@ public class Frame extends javax.swing.JFrame {
         }
 
         else {
-           JOptionPane.showMessageDialog(null, "You have exceeded the number of maximum attempts! Please wait for 10 mins, Your account is also disabled as a result, Please contact an admin to resolve!",
+           JOptionPane.showMessageDialog(null, "You have exceeded the number of maximum attempts! Please wait for 10 mins!",
             "Error!", JOptionPane.ERROR_MESSAGE);   
             
+            if(!username.isEmpty()) {
+                  JOptionPane.showMessageDialog(null, "Your account is also disabled as a result, Please contact an admin to resolve!",
+            "Error!", JOptionPane.ERROR_MESSAGE);  
+            }
+
             endTime = System.currentTimeMillis();
 
             long timeElapsed = endTime - currTime;
 
-            if(timeElapsed > 60000) 
-                counter = 0;  
+            if(timeElapsed > 20000) {
+                counter = 0;
+                isDisabled = 0;
+            }
+            
 
-            main.sqlite.editUserRole(username, 1);
+            if(!username.isEmpty() && isDisabled == 0) {
+                isDisabled = 1;
+                main.sqlite.editUserRole(username, 1);
+            }
         }
     }
 

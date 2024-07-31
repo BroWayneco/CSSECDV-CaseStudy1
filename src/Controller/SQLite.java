@@ -10,6 +10,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
 
@@ -182,26 +184,37 @@ public class SQLite {
     }
     
     public void addUser(String username, String password, String confpass) {
-        if(username.length() > 0 && password.length() > 0 && password.equals(confpass)) {
+        if(isValidUsername(username) && isValidPassword(password)) {
             String sql = "INSERT INTO users(username,password) VALUES('" + username + "','" + password + "')";
             
             try (Connection conn = DriverManager.getConnection(driverURL);
                 Statement stmt = conn.createStatement()){
                 stmt.execute(sql);
-        
-//      PREPARED STATEMENT EXAMPLE
-//      String sql = "INSERT INTO users(username,password) VALUES(?,?)";
-//      PreparedStatement pstmt = conn.prepareStatement(sql)) {
-//      pstmt.setString(1, username);
-//      pstmt.setString(2, password);
-//      pstmt.executeUpdate();
+                JOptionPane.showMessageDialog(null, "User has been created!",
+                "Message", JOptionPane.INFORMATION_MESSAGE);
         }  catch (Exception ex) {
             System.out.print(ex);
         }}
 
-        else {
-            JOptionPane.showMessageDialog(null, "Username and Password Cannot be Empty!",
-            "Error!", JOptionPane.ERROR_MESSAGE);}
+        else if(username.isEmpty() || password.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Username and Password Cannot be Empty!",
+                "Error!", JOptionPane.ERROR_MESSAGE);
+        }
+    
+        else if(username.length() > 0 && password.length() > 0 && !password.equals(confpass)) {
+                JOptionPane.showMessageDialog(null, "Password and Confirm Password must match!",
+                "Error!", JOptionPane.ERROR_MESSAGE);
+        }
+
+        else if(!isValidUsername(username)) {
+            JOptionPane.showMessageDialog(null,"Username : Username length must be between 6-30 characters, and must only be word characters.",
+            "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+        else if(!isValidPassword(password)){
+            JOptionPane.showMessageDialog(null, "Password : Password length must be at least 8 characters and 64 characters at most. It must also contain at least 1 upper case character, at least 1 lower case character, at least 1 digit, and at least 1 special character and no spaces",
+            "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
     
     public ArrayList<History> getHistory(){
@@ -305,7 +318,7 @@ public class SQLite {
         if(isUser == 1)
             return roles;
         else {
-            JOptionPane.showMessageDialog(null, "This User Does Not Exist!",
+            JOptionPane.showMessageDialog(null, "Incorrect Username or Password!",
             "Error!", JOptionPane.ERROR_MESSAGE);
 
             return roles0; }
@@ -329,7 +342,7 @@ public class SQLite {
         if(isUser == 1)
             return passwords;
         else {
-            JOptionPane.showMessageDialog(null, "This User Does Not Exist!",
+            JOptionPane.showMessageDialog(null, "Incorrect Username or Password!",
             "Error!", JOptionPane.ERROR_MESSAGE);
             
             return passwords; }
@@ -434,4 +447,44 @@ public class SQLite {
             System.out.print(ex);
         }
     }
+
+    public static boolean isValidPassword(String password) {
+        // Regex to check valid password.
+        String regex = "^(?=.*[0-9])"
+                       + "(?=.*[a-z])(?=.*[A-Z])"
+                       + "(?=.*[@#$%^&+=])"
+                       + "(?=\\S+$).{8,20}$";
+ 
+        Pattern p = Pattern.compile(regex);
+ 
+        if (password == null) {
+            return false;
+        }
+ 
+        Matcher m = p.matcher(password);
+ 
+        return m.matches();
+    }
+
+    public static boolean isValidUsername(String username) {
+        // Regex to check valid password.
+        String regex = "^[A-Za-z]\\w{5,29}$"; 
+ 
+        Pattern p = Pattern.compile(regex);
+ 
+        if (username == null) {
+            return false;
+        }
+ 
+        Matcher m = p.matcher(username);
+ 
+        return m.matches();
+    }
 }
+
+//      PREPARED STATEMENT EXAMPLE
+//      String sql = "INSERT INTO users(username,password) VALUES(?,?)";
+//      PreparedStatement pstmt = conn.prepareStatement(sql)) {
+//      pstmt.setString(1, username);
+//      pstmt.setString(2, password);
+//      pstmt.executeUpdate();
