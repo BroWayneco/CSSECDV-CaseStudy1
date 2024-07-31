@@ -214,6 +214,7 @@ public class Frame extends javax.swing.JFrame {
     public Main main;
     public Login loginPnl = new Login();
     public Register registerPnl = new Register();
+    public ForgotPassword forgotPassPnl = new ForgotPassword();
 
     private AdminHome adminHomePnl = new AdminHome();
     private ManagerHome managerHomePnl = new ManagerHome();
@@ -226,6 +227,8 @@ public class Frame extends javax.swing.JFrame {
     private long currTime = 0;
     private long endTime = 0;
     int isDisabled = 0;
+    private String userName;
+    private String securityAnswer;
 
     public void init(Main controller){
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -235,6 +238,7 @@ public class Frame extends javax.swing.JFrame {
         this.main = controller;
         loginPnl.frame = this;
         registerPnl.frame = this;
+        forgotPassPnl.frame = this;
         
        
    //     adminBtn.setEnabled(false);
@@ -247,6 +251,7 @@ public class Frame extends javax.swing.JFrame {
         Container.setLayout(frameView);
         Container.add(loginPnl, "loginPnl");
         Container.add(registerPnl, "registerPnl");
+        Container.add(forgotPassPnl, "forgotPassPnl");
         Container.add(HomePnl, "homePnl");
         frameView.show(Container, "loginPnl");
         
@@ -269,6 +274,22 @@ public class Frame extends javax.swing.JFrame {
     
     public void registerNav(){
         frameView.show(Container, "registerPnl");
+    }
+
+    public void forgotPassNav(){
+        frameView.show(Container, "forgotPassPnl");
+    }
+
+    public void forgotPassAction(){
+        if(securityAnswer.equals("yellow")) {
+            JOptionPane.showMessageDialog(null, "Your Password is " + main.sqlite.getForgottenPassword(userName),
+            "Message", JOptionPane.INFORMATION_MESSAGE);
+        }
+
+        else {
+            JOptionPane.showMessageDialog(null, "Your Answer is Incorrect!",
+            "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
     
     public void registerAction(String username, String password, String confpass){
@@ -389,6 +410,11 @@ public class Frame extends javax.swing.JFrame {
         }
     }
 
+    public void setUser (String username, String answer) {
+        userName = username;
+        securityAnswer = answer;
+     }
+     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Container;
     private javax.swing.JPanel Content;

@@ -28,7 +28,7 @@ public class Login extends javax.swing.JPanel {
         passwordFld = new javax.swing.JPasswordField();
         registerBtn = new javax.swing.JButton();
         loginBtn = new javax.swing.JButton();
-
+        forgotPassbtn = new javax.swing.JButton();
         
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 48)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -45,6 +45,13 @@ public class Login extends javax.swing.JPanel {
         passwordFld.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         passwordFld.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true), "PASSWORD", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12))); // NOI18N
 
+        forgotPassbtn.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        forgotPassbtn.setText("Forgot Password");
+        forgotPassbtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                forgotPassbtnActionPerformed(evt);
+            }
+        });
 
         registerBtn.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         registerBtn.setText("REGISTER");
@@ -75,12 +82,16 @@ public class Login extends javax.swing.JPanel {
                         .addComponent(loginBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(usernameFld)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(passwordFld, javax.swing.GroupLayout.Alignment.LEADING))
+                    .addComponent(passwordFld, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(forgotPassbtn))
                 .addContainerGap(200, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(forgotPassbtn)
+                .addGap(24, 24, 24)
                 .addContainerGap(88, Short.MAX_VALUE)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(50, 50, 50)
@@ -107,7 +118,14 @@ public class Login extends javax.swing.JPanel {
         frame.registerNav();
     }//GEN-LAST:event_registerBtnActionPerformed
 
+    private void forgotPassbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backBtnActionPerformed
+        usernameFld.setText("");
+        passwordFld.setText("");
+        frame.forgotPassNav();
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton forgotPassbtn;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JButton loginBtn;
     private javax.swing.JPasswordField passwordFld;

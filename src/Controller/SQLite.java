@@ -480,6 +480,30 @@ public class SQLite {
  
         return m.matches();
     }
+
+    public String getForgottenPassword(String username) {
+        String sql = "SELECT password FROM users WHERE username='" + username + "';";
+        String passwords = "name";
+
+        int isUser = 0;
+    
+        try (Connection conn = DriverManager.getConnection(driverURL);
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql)) {
+                if (rs.next()){
+                    isUser = 1;
+                    passwords = (rs.getString("password"));
+                } 
+        } catch (Exception ex) {}
+
+        if(isUser == 1)
+            return passwords;
+        else {
+            JOptionPane.showMessageDialog(null, "Incorrect Username or Password!",
+            "Error!", JOptionPane.ERROR_MESSAGE);
+            
+            return passwords; }
+    }
 }
 
 //      PREPARED STATEMENT EXAMPLE
