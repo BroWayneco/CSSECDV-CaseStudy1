@@ -204,7 +204,6 @@ public class SQLite {
             "Error!", JOptionPane.ERROR_MESSAGE);}
     }
     
-    
     public ArrayList<History> getHistory(){
         String sql = "SELECT id, username, name, stock, timestamp FROM history";
         ArrayList<History> histories = new ArrayList<History>();
@@ -385,5 +384,19 @@ public class SQLite {
         } catch (Exception ex) {
             System.out.print(ex);
         }
+    }
+
+    public String getCurrentUser(String username) {
+        String sql = "SELECT username FROM users WHERE username='" + username + "';";
+
+        try (Connection conn = DriverManager.getConnection(driverURL);
+            Statement stmt = conn.createStatement()) {
+            stmt.execute(sql);
+            System.out.println("User " + username + " is currently logged in.");
+        } catch (Exception ex) {
+            System.out.print(ex);
+        }
+
+        return username;
     }
 }

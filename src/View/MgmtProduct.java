@@ -246,6 +246,21 @@ public class MgmtProduct extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_deleteBtnActionPerformed
 
+    public javax.swing.JButton getAddBtn() {
+        return addBtn;
+    }
+
+    public javax.swing.JButton getEditBtn() {
+        return editBtn;
+    }
+    
+    public javax.swing.JButton getDeleteBtn() {
+        return deleteBtn;
+    }
+
+    public javax.swing.JButton getPurchaseBtn() {
+        return purchaseBtn;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addBtn;

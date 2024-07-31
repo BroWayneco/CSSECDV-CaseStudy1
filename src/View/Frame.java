@@ -213,7 +213,7 @@ public class Frame extends javax.swing.JFrame {
     public Main main;
     public Login loginPnl = new Login();
     public Register registerPnl = new Register();
-    
+
     private AdminHome adminHomePnl = new AdminHome();
     private ManagerHome managerHomePnl = new ManagerHome();
     private StaffHome staffHomePnl = new StaffHome();
@@ -276,7 +276,8 @@ public class Frame extends javax.swing.JFrame {
     public void loginAction(String username, String password){
         if(counter <= 5) {
             int role = main.sqlite.getUserRole(username).get(0);
-    
+            
+            System.out.println(main.sqlite.getCurrentUser(username));
             String rightPass = main.sqlite.getPassword(username, password).toString();
             
             if(role != 0 && rightPass.equals(password)){
@@ -297,6 +298,10 @@ public class Frame extends javax.swing.JFrame {
                     clientHomePnl.showPnl("home");
                     contentView.show(Content, "clientHomePnl");
                     
+                    clientHomePnl.mgmtProduct.getAddBtn().setVisible(false);
+                    clientHomePnl.mgmtProduct.getDeleteBtn().setVisible(false);
+                    clientHomePnl.mgmtProduct.getEditBtn().setVisible(false);
+
                     mainNav();
                     break;
                     
@@ -309,6 +314,8 @@ public class Frame extends javax.swing.JFrame {
                     staffHomePnl.showPnl("home");
                     contentView.show(Content, "staffHomePnl");
 
+                    staffHomePnl.mgmtProduct.getPurchaseBtn().setVisible(false);
+
                     mainNav();
                     break;
                    
@@ -320,6 +327,8 @@ public class Frame extends javax.swing.JFrame {
 
                     managerHomePnl.showPnl("home");
                     contentView.show(Content, "managerHomePnl");
+
+                    managerHomePnl.mgmtProduct.getPurchaseBtn().setVisible(false);
 
                     mainNav();
                     break;
