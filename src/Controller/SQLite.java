@@ -374,4 +374,16 @@ public class SQLite {
         }
         return product;
     }
+
+    public void editUserRole(String username, int role) {
+        String sql = "UPDATE users SET role = '" + role + "' WHERE username='" + username + "';";
+
+        try (Connection conn = DriverManager.getConnection(driverURL);
+            Statement stmt = conn.createStatement()) {
+            stmt.execute(sql);
+            System.out.println("User " + username + " has been disabled.");
+        } catch (Exception ex) {
+            System.out.print(ex);
+        }
+    }
 }

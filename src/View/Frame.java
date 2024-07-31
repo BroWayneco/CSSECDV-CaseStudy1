@@ -287,28 +287,52 @@ public class Frame extends javax.swing.JFrame {
                     System.out.println("Your account is disabled!");
                     loginNav();
                     break;
+                    
                     case 2:
-                    staffBtn.setEnabled(false);
-                    adminBtn.setEnabled(false);
-                    managerBtn.setEnabled(false);
+                    staffBtn.setVisible(false);
+                    adminBtn.setVisible(false);
+                    managerBtn.setVisible(false);
+                    clientBtn.setVisible(true);
+
+                    clientHomePnl.showPnl("home");
+                    contentView.show(Content, "clientHomePnl");
+                    
                     mainNav();
                     break;
+                    
                     case 3:
-                    clientBtn.setEnabled(false);
-                    adminBtn.setEnabled(false);
-                    managerBtn.setEnabled(false);
+                    clientBtn.setVisible(false);
+                    adminBtn.setVisible(false);
+                    managerBtn.setVisible(false);
+                    staffBtn.setVisible(true);
+
+                    staffHomePnl.showPnl("home");
+                    contentView.show(Content, "staffHomePnl");
+
                     mainNav();
                     break;
+                   
                     case 4:
-                    clientBtn.setEnabled(false);
-                    staffBtn.setEnabled(false);
-                    adminBtn.setEnabled(false);
+                    clientBtn.setVisible(false);
+                    staffBtn.setVisible(false);
+                    adminBtn.setVisible(false);
+                    managerBtn.setVisible(true);
+
+                    managerHomePnl.showPnl("home");
+                    contentView.show(Content, "managerHomePnl");
+
                     mainNav();
                     break;
+                    
                     case 5:
-                    clientBtn.setEnabled(false);
-                    staffBtn.setEnabled(false);
-                    managerBtn.setEnabled(false);
+                    clientBtn.setVisible(false);
+                    staffBtn.setVisible(false);
+                    managerBtn.setVisible(false);
+                    adminBtn.setVisible(true);
+
+                    adminHomePnl.showPnl("home");
+                    contentView.show(Content, "adminHomePnl");
+                    
                     mainNav();
                     break;
                 }
@@ -326,7 +350,7 @@ public class Frame extends javax.swing.JFrame {
         }
 
         else {
-            JOptionPane.showMessageDialog(null, "You have exceeded the number of maximum attempts! Please wait for 10 mins",
+           JOptionPane.showMessageDialog(null, "You have exceeded the number of maximum attempts! Please wait for 10 mins, Your account is also disabled as a result, Please contact an admin to resolve!",
             "Error!", JOptionPane.ERROR_MESSAGE);   
             
             endTime = System.currentTimeMillis();
@@ -334,8 +358,9 @@ public class Frame extends javax.swing.JFrame {
             long timeElapsed = endTime - currTime;
 
             if(timeElapsed > 60000) 
-                counter = 0; 
-        
+                counter = 0;  
+
+            main.sqlite.editUserRole(username, 1);
         }
     }
 
