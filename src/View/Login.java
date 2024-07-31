@@ -1,4 +1,3 @@
-
 package View;
 
 import java.sql.Connection;
@@ -97,9 +96,14 @@ public class Login extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
     private void loginBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginBtnActionPerformed
         frame.loginAction(usernameFld.getText(), passwordFld.getText());
+        usernameFld.setText("");
+        passwordFld.setText("");
+        
     }//GEN-LAST:event_loginBtnActionPerformed
 
     private void registerBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerBtnActionPerformed
+        usernameFld.setText("");
+        passwordFld.setText("");
         frame.registerNav();
     }//GEN-LAST:event_registerBtnActionPerformed
 
