@@ -107,7 +107,6 @@ public class Login extends javax.swing.JPanel {
         frame.registerNav();
     }//GEN-LAST:event_registerBtnActionPerformed
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JButton loginBtn;

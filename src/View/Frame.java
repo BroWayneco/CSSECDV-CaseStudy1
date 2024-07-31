@@ -208,6 +208,7 @@ public class Frame extends javax.swing.JFrame {
         managerBtn.setEnabled(true);
         adminBtn.setEnabled(true);
         frameView.show(Container, "loginPnl");
+        main.sqlite.getHistory();
     }//GEN-LAST:event_logoutBtnActionPerformed
 
     public Main main;
@@ -302,6 +303,8 @@ public class Frame extends javax.swing.JFrame {
                     clientHomePnl.mgmtProduct.getDeleteBtn().setVisible(false);
                     clientHomePnl.mgmtProduct.getEditBtn().setVisible(false);
 
+                    clientHomePnl.mgmtHistory.setUser(username, role);
+                    
                     mainNav();
                     break;
                     

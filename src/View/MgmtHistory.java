@@ -21,6 +21,8 @@ public class MgmtHistory extends javax.swing.JPanel {
 
     public SQLite sqlite;
     public DefaultTableModel tableModel;
+    private String userName;
+    private int roleNumber;
     
     public MgmtHistory(SQLite sqlite) {
         initComponents();
@@ -48,11 +50,11 @@ public class MgmtHistory extends javax.swing.JPanel {
 //      LOAD CONTENTS
         ArrayList<History> history = sqlite.getHistory();
 
-    
+      
         for(int nCtr = 0; nCtr < history.size(); nCtr++){
             Product product = sqlite.getProduct(history.get(nCtr).getName());
-        
-         //   if(history.get(nCtr).getUsername().equals(sqlite.getCurrentUser())) {
+            if(roleNumber == 2) {
+                if(history.get(nCtr).getUsername().equals(userName)) {
                 tableModel.addRow(new Object[]{
                     history.get(nCtr).getUsername(), 
                     history.get(nCtr).getName(), 
@@ -60,9 +62,20 @@ public class MgmtHistory extends javax.swing.JPanel {
                     product.getPrice(), 
                     product.getPrice() * history.get(nCtr).getStock(), 
                     history.get(nCtr).getTimestamp()
-                });
-          //  }
+                    });
+                }
+            }
 
+            else {
+                tableModel.addRow(new Object[]{
+                    history.get(nCtr).getUsername(), 
+                    history.get(nCtr).getName(), 
+                    history.get(nCtr).getStock(), 
+                    product.getPrice(), 
+                    product.getPrice() * history.get(nCtr).getStock(), 
+                    history.get(nCtr).getTimestamp()
+                    });
+            }
         }
     }
     
@@ -205,6 +218,11 @@ public class MgmtHistory extends javax.swing.JPanel {
     private void reloadBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reloadBtnActionPerformed
         init();
     }//GEN-LAST:event_reloadBtnActionPerformed
+
+    public void setUser (String username, int role){
+       userName = username;
+       roleNumber = role;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
