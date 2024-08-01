@@ -187,7 +187,7 @@ public class SQLite {
     
     public void addUser(String username, String password, String confpass, String salt, String hash) {
         if(isValidUsername(username) && isValidPassword(password)) {
-            String sql = "INSERT INTO users(username,password,salt,hash) VALUES('" + username + "','" + password + "','" + salt + "','" + password + "')";
+            String sql = "INSERT INTO users(username,password,salt,hash) VALUES('" + username + "','" + password + "','" + salt + "','" + hash + "')";
             
             try (Connection conn = DriverManager.getConnection(driverURL);
                 Statement stmt = conn.createStatement()){
@@ -534,7 +534,7 @@ public class SQLite {
     }
 
     public String getHash(String username) {
-        String sql = "SELECT salt FROM users WHERE username='" + username + "';";
+        String sql = "SELECT hash FROM users WHERE username='" + username + "';";
         String userHash = "";
 
         int isUser = 0;

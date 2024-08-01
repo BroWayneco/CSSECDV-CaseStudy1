@@ -305,8 +305,7 @@ public class Frame extends javax.swing.JFrame {
     public void loginAction(String username, String password){
         if(counter <= 5) {
             int role = main.sqlite.getUserRole(username).get(0);
-            
-            System.out.print(role);
+        
             String rightPass = main.sqlite.getPassword(username, password).toString();
             
             if(username.equals("admin") || username.equals("manager") || username.equals("staff")
@@ -316,13 +315,15 @@ public class Frame extends javax.swing.JFrame {
             }
 
             else {
-                compareHash1 = get_SHA_512_SecurePassword(main.sqlite.getPassword(username, password).toString(), main.sqlite.getSalt(username));
+                compareHash1 = get_SHA_512_SecurePassword(main.sqlite.getPassword(username, password), main.sqlite.getSalt(username));
                 compareHash2 = get_SHA_512_SecurePassword(password, main.sqlite.getSalt(username));
             }
 
-            System.out.print(compareHash1);
+            System.out.print("Compare Hash1 is " + compareHash1);
             System.out.print('\n');
-            System.out.print(compareHash2);
+            System.out.print("Compare Hash2 is " + compareHash2);
+
+            System.out.print(compareHash1.equals(compareHash2));
 
             if(role != 0 && compareHash1.equals(compareHash2)){
                 switch (role) {
