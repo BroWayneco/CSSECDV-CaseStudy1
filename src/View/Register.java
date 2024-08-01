@@ -1,6 +1,8 @@
 
 package View;
 
+import java.security.*;
+
 public class Register extends javax.swing.JPanel {
 
     public Frame frame;
@@ -97,11 +99,7 @@ public class Register extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void registerBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerBtnActionPerformed
-        frame.registerAction(usernameFld.getText(), passwordFld.getText(), confpassFld.getText());
-        usernameFld.setText("");
-        passwordFld.setText("");
-        confpassFld.setText("");
-        frame.loginNav();
+        hashValue(passwordFld.getText(), confpassFld.getText());
     }//GEN-LAST:event_registerBtnActionPerformed
 
     private void backBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backBtnActionPerformed
@@ -110,6 +108,50 @@ public class Register extends javax.swing.JPanel {
         confpassFld.setText("");
         frame.loginNav();
     }//GEN-LAST:event_backBtnActionPerformed
+
+    public void hashValue(String password, String confpass){
+        String passwordToHash = password;
+        String passwordToHash2 = confpass;
+        String salt = getSalt();
+
+        String securePassword = get_SHA_512_SecurePassword(passwordToHash, salt);
+      
+        frame.registerAction(usernameFld.getText(), passwordFld.getText(), confpassFld.getText());
+       
+        usernameFld.setText("");
+        passwordFld.setText("");
+        confpassFld.setText("");
+
+        frame.setHash(salt, securePassword);
+
+        frame.loginNav();
+    }
+
+    private static String get_SHA_512_SecurePassword(String passwordToHash,
+            String salt) {
+        String generatedPassword = null;
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-512");
+            md.update(salt.getBytes());
+            byte[] bytes = md.digest(passwordToHash.getBytes());
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < bytes.length; i++) {
+                sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16)
+                        .substring(1));
+            }
+            generatedPassword = sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return generatedPassword;
+    }
+
+    private static String getSalt() {
+        SecureRandom random = new SecureRandom();
+        byte[] salt = new byte[16];
+        random.nextBytes(salt);
+        return salt.toString();
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton backBtn;

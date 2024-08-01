@@ -90,7 +90,9 @@ public class SQLite {
             + " username TEXT NOT NULL UNIQUE,\n"
             + " password TEXT NOT NULL,\n"
             + " role INTEGER DEFAULT 2,\n"
-            + " locked INTEGER DEFAULT 0\n"
+            + " locked INTEGER DEFAULT 0,\n"
+            + " salt TEXT NOT NULL,\n"
+            + " hash TEXT NOT NULL\n"
             + ");";
 
         try (Connection conn = DriverManager.getConnection(driverURL);
@@ -183,9 +185,9 @@ public class SQLite {
         }
     }
     
-    public void addUser(String username, String password, String confpass) {
+    public void addUser(String username, String password, String confpass, String salt, String hash) {
         if(isValidUsername(username) && isValidPassword(password)) {
-            String sql = "INSERT INTO users(username,password) VALUES('" + username + "','" + password + "')";
+            String sql = "INSERT INTO users(username,password,salt,hash) VALUES('" + username + "','" + password + "','" + salt + "','" + password + "')";
             
             try (Connection conn = DriverManager.getConnection(driverURL);
                 Statement stmt = conn.createStatement()){
@@ -503,6 +505,58 @@ public class SQLite {
             "Error!", JOptionPane.ERROR_MESSAGE);
             
             return passwords; }
+    }
+
+    public String getSalt(String username) {
+        String sql = "SELECT salt FROM users WHERE username='" + username + "';";
+        String userSalt = "";
+
+        int isUser = 0;
+    
+        try (Connection conn = DriverManager.getConnection(driverURL);
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql)) {
+                if (rs.next()){
+                    isUser = 1;
+                    userSalt = (rs.getString("salt"));
+                } 
+        } catch (Exception ex) {}
+
+        if(isUser == 1) {
+            return userSalt;
+        }
+
+        else {
+            JOptionPane.showMessageDialog(null, "Incorrect Username or Password!",
+            "Error!", JOptionPane.ERROR_MESSAGE);
+            
+            return userSalt; }
+    }
+
+    public String getHash(String username) {
+        String sql = "SELECT salt FROM users WHERE username='" + username + "';";
+        String userHash = "";
+
+        int isUser = 0;
+    
+        try (Connection conn = DriverManager.getConnection(driverURL);
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql)) {
+                if (rs.next()){
+                    isUser = 1;
+                    userHash = (rs.getString("hash"));
+                } 
+        } catch (Exception ex) {}
+
+        if(isUser == 1) {
+            return userHash;
+        }
+
+        else {
+            JOptionPane.showMessageDialog(null, "Incorrect Username or Password!",
+            "Error!", JOptionPane.ERROR_MESSAGE);
+            
+            return userHash; }
     }
 }
 

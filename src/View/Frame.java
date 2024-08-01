@@ -5,6 +5,8 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Dimension;
 
+import java.security.*;
+
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
@@ -229,6 +231,10 @@ public class Frame extends javax.swing.JFrame {
     int isDisabled = 0;
     private String userName;
     private String securityAnswer;
+    private String userSalt;
+    private String userHash;
+    private String compareHash1;
+    private String compareHash2;
 
     public void init(Main controller){
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -293,7 +299,7 @@ public class Frame extends javax.swing.JFrame {
     }
     
     public void registerAction(String username, String password, String confpass){
-        main.sqlite.addUser(username, password, confpass);
+        main.sqlite.addUser(username, password, confpass, userSalt, userHash);
     }
 
     public void loginAction(String username, String password){
@@ -302,7 +308,22 @@ public class Frame extends javax.swing.JFrame {
             
             String rightPass = main.sqlite.getPassword(username, password).toString();
             
-            if(role != 0 && rightPass.equals(password)){
+            if(username.equals("admin") || username.equals("manager") || username.equals("staff")
+            || username.equals("client1") || username.equals("client2")) {
+                compareHash1 = rightPass;
+                compareHash2 = password;
+            }
+
+            else {
+                compareHash1 = get_SHA_512_SecurePassword(main.sqlite.getPassword(username, password).toString(), main.sqlite.getSalt(username));
+                compareHash2 = get_SHA_512_SecurePassword(password, main.sqlite.getSalt(username));
+            }
+
+            System.out.print(compareHash1);
+            System.out.print('\n');
+            System.out.print(compareHash2);
+
+            if(role != 0 && compareHash1.equals(compareHash2)){
                 switch (role) {
                     case 1:
                     JOptionPane.showMessageDialog(null, "Your Account is Disabled! Please Contact an Administrator",
@@ -397,7 +418,7 @@ public class Frame extends javax.swing.JFrame {
 
             long timeElapsed = endTime - currTime;
 
-            if(timeElapsed > 20000) {
+            if(timeElapsed > 60000) {
                 counter = 0;
                 isDisabled = 0;
             }
@@ -414,7 +435,32 @@ public class Frame extends javax.swing.JFrame {
         userName = username;
         securityAnswer = answer;
      }
-     
+
+    public void setHash (String salt, String hash) {
+        userSalt = salt;
+        userHash = hash;
+     }
+    
+    private static String get_SHA_512_SecurePassword(String passwordToHash,
+            String salt) {
+        String generatedPassword = null;
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-512");
+            md.update(salt.getBytes());
+            byte[] bytes = md.digest(passwordToHash.getBytes());
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < bytes.length; i++) {
+                sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16)
+                        .substring(1));
+            }
+            generatedPassword = sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return generatedPassword;
+    }
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Container;
     private javax.swing.JPanel Content;
