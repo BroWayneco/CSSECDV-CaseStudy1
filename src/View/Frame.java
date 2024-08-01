@@ -306,12 +306,13 @@ public class Frame extends javax.swing.JFrame {
         if(counter <= 5) {
             int role = main.sqlite.getUserRole(username).get(0);
             
+            System.out.print(role);
             String rightPass = main.sqlite.getPassword(username, password).toString();
             
             if(username.equals("admin") || username.equals("manager") || username.equals("staff")
-            || username.equals("client1") || username.equals("client2")) {
+            || username.equals("client1") || username.equals("client2")) { 
                 compareHash1 = rightPass;
-                compareHash2 = password;
+                compareHash2 = password;  
             }
 
             else {

@@ -91,8 +91,8 @@ public class SQLite {
             + " password TEXT NOT NULL,\n"
             + " role INTEGER DEFAULT 2,\n"
             + " locked INTEGER DEFAULT 0,\n"
-            + " salt TEXT NOT NULL,\n"
-            + " hash TEXT NOT NULL\n"
+            + " salt TEXT ,\n"
+            + " hash TEXT\n"
             + ");";
 
         try (Connection conn = DriverManager.getConnection(driverURL);
@@ -328,7 +328,7 @@ public class SQLite {
 
     public String getPassword(String username, String password) {
         String sql = "SELECT password FROM users WHERE username='" + username + "';";
-        String passwords = "name";
+        String passwords = "qwerty1234";
 
         int isUser = 0;
     
