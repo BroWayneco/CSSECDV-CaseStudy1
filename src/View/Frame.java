@@ -7,6 +7,9 @@ import java.awt.Dimension;
 
 import java.security.*;
 
+import java.sql.Timestamp;
+import java.util.Date;
+
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
@@ -300,10 +303,13 @@ public class Frame extends javax.swing.JFrame {
     
     public void registerAction(String username, String password, String confpass){
         main.sqlite.addUser(username, password, confpass, userSalt, userHash);
+        main.sqlite.addLogs("NOTICE", username, "User created successfully", new Timestamp(new Date().getTime()).toString());
     }
 
     public void loginAction(String username, String password){
         if(counter <= 5) {
+            clientHomePnl.mgmtUser.setUser(username);
+
             int role = main.sqlite.getUserRole(username).get(0);
         
             String rightPass = main.sqlite.getPassword(username, password).toString();

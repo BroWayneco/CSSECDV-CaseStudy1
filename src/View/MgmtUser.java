@@ -7,7 +7,11 @@ package View;
 
 import Controller.SQLite;
 import Model.User;
+
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
+
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
@@ -24,6 +28,7 @@ public class MgmtUser extends javax.swing.JPanel {
 
     public SQLite sqlite;
     public DefaultTableModel tableModel;
+    private String userName;
     
     public MgmtUser(SQLite sqlite) {
         initComponents();
@@ -196,6 +201,8 @@ public class MgmtUser extends javax.swing.JPanel {
                 int role = result.charAt(0) - '0';
 
                 sqlite.editUserRole(username, role);
+
+                sqlite.addLogs("NOTICE", username, "Edited Role Successfully", new Timestamp(new Date().getTime()).toString());
             }
         }
     }//GEN-LAST:event_editRoleBtnActionPerformed
@@ -209,6 +216,8 @@ public class MgmtUser extends javax.swing.JPanel {
 
                 String username = (tableModel.getValueAt(table.getSelectedRow(), 0)).toString();
                 sqlite.removeUser(username);
+
+                sqlite.addLogs("NOTICE", username, "Deleted Successfully", new Timestamp(new Date().getTime()).toString());
             }
         }
     }//GEN-LAST:event_deleteBtnActionPerformed
@@ -224,6 +233,8 @@ public class MgmtUser extends javax.swing.JPanel {
             
             if (result == JOptionPane.YES_OPTION) {
                 System.out.println(tableModel.getValueAt(table.getSelectedRow(), 0));
+
+                sqlite.addLogs("NOTICE", (tableModel.getValueAt(table.getSelectedRow(), 0)).toString(), "User Locked Successfully", new Timestamp(new Date().getTime()).toString());
             }
         }
     }//GEN-LAST:event_lockBtnActionPerformed
@@ -244,11 +255,16 @@ public class MgmtUser extends javax.swing.JPanel {
             if (result == JOptionPane.OK_OPTION) {
                 System.out.println(password.getText());
                 System.out.println(confpass.getText());
+
+                sqlite.addLogs("NOTICE", (tableModel.getValueAt(table.getSelectedRow(), 0)).toString(), "Password Changed Successfully", new Timestamp(new Date().getTime()).toString());
             }
         }
     }//GEN-LAST:event_chgpassBtnActionPerformed
 
-
+    public void setUser (String username){
+        userName = username;
+     }
+     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton chgpassBtn;
     private javax.swing.JButton deleteBtn;
