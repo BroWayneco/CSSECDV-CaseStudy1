@@ -558,6 +558,44 @@ public class SQLite {
             
             return userHash; }
     }
+
+    public void editUserPassword(String username, String password) {
+        String sql = "UPDATE users SET password = '" + password + "' WHERE username='" + username + "';";
+
+        try (Connection conn = DriverManager.getConnection(driverURL);
+            Statement stmt = conn.createStatement()) {
+            stmt.execute(sql);
+            System.out.println("Password changed to : " + password);
+        } catch (Exception ex) {
+            System.out.print(ex);
+        }
+    }
+
+    public int getProductStock(String name){
+        String sql = "SELECT stock FROM product WHERE name='" + name + "';";
+        int productStock = 0;
+        try (Connection conn = DriverManager.getConnection(driverURL);
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql)){
+            productStock = rs.getInt("stock");
+        } catch (Exception ex) {
+            System.out.print(ex);
+        }
+        return productStock;
+    }
+
+    public void editProductStock(String name, int stock) {
+        String sql = "UPDATE product SET stock = '" + stock + "'WHERE name ='" + name + "';";
+    
+        try (Connection conn = DriverManager.getConnection(driverURL);
+            Statement stmt = conn.createStatement()) {
+            stmt.execute(sql);
+            System.out.println("Product " + name + " has been changed.");
+        } 
+        catch (Exception ex) {
+            System.out.print(ex);
+        }
+    }
 }
 
 //      PREPARED STATEMENT EXAMPLE

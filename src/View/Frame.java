@@ -308,10 +308,8 @@ public class Frame extends javax.swing.JFrame {
 
     public void loginAction(String username, String password){
         if(counter <= 5) {
-            clientHomePnl.mgmtUser.setUser(username);
-
             int role = main.sqlite.getUserRole(username).get(0);
-        
+            
             String rightPass = main.sqlite.getPassword(username, password).toString();
             
             if(username.equals("admin") || username.equals("manager") || username.equals("staff")
@@ -352,11 +350,12 @@ public class Frame extends javax.swing.JFrame {
                     clientHomePnl.mgmtProduct.getAddBtn().setVisible(false);
                     clientHomePnl.mgmtProduct.getDeleteBtn().setVisible(false);
                     clientHomePnl.mgmtProduct.getEditBtn().setVisible(false);
+                    clientHomePnl.mgmtHistory.getSearchBtn().setVisible(false);
 
                     clientHomePnl.mgmtHistory.setUser(username, role);
                     clientHomePnl.mgmtProduct.setUser(username);
-                    clientHomePnl.mgmtHistory.getSearchBtn().setVisible(false);
-
+                    clientHomePnl.mgmtUser.setUser(username);
+                    
                     mainNav();
                     break;
                     
@@ -370,6 +369,9 @@ public class Frame extends javax.swing.JFrame {
                     contentView.show(Content, "staffHomePnl");
 
                     staffHomePnl.mgmtProduct.getPurchaseBtn().setVisible(false);
+
+                    staffHomePnl.mgmtProduct.setUser(username);
+                    staffHomePnl.mgmtUser.setUser(username);
 
                     mainNav();
                     break;
@@ -385,6 +387,9 @@ public class Frame extends javax.swing.JFrame {
 
                     managerHomePnl.mgmtProduct.getPurchaseBtn().setVisible(false);
 
+                    managerHomePnl.mgmtProduct.setUser(username);
+                    managerHomePnl.mgmtUser.setUser(username);
+
                     mainNav();
                     break;
                     
@@ -397,6 +402,11 @@ public class Frame extends javax.swing.JFrame {
                     adminHomePnl.showPnl("home");
                     contentView.show(Content, "adminHomePnl");
                     
+                    adminHomePnl.mgmtProduct.getPurchaseBtn().setVisible(false);
+                    
+                    adminHomePnl.mgmtProduct.setUser(username);
+                    adminHomePnl.mgmtUser.setUser(username);
+
                     mainNav();
                     break;
                 }

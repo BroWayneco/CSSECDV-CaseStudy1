@@ -191,8 +191,30 @@ public class MgmtProduct extends javax.swing.JPanel {
 
             if (result == JOptionPane.OK_OPTION) {
                 System.out.println(stockFld.getText());
+                
+                int buyStock = sqlite.getProductStock(tableModel.getValueAt(table.getSelectedRow(), 0).toString());
 
-                sqlite.addHistory(userName, tableModel.getValueAt(table.getSelectedRow(), 0).toString(), Integer.parseInt(stockFld.getText()), new Timestamp(new Date().getTime()).toString());
+                if(Integer.parseInt(stockFld.getText()) > buyStock && Integer.parseInt(stockFld.getText()) != 0) {
+                    System.out.print("Bought Failed");
+
+                    JOptionPane.showMessageDialog(null, "Amount Exceeds Stock!",
+                    "Error!", JOptionPane.ERROR_MESSAGE);
+
+                    sqlite.addLogs("NOTICE", userName, "Purchase failed", new Timestamp(new Date().getTime()).toString());
+                }
+
+                else {
+                    buyStock = buyStock - Integer.parseInt(stockFld.getText());
+                    System.out.print("Bought Successfully");
+                    
+                    JOptionPane.showMessageDialog(null, "Purchase Successful",
+                    "Confirmation", JOptionPane.INFORMATION_MESSAGE);
+                    
+                    sqlite.editProductStock(tableModel.getValueAt(table.getSelectedRow(), 0).toString(), buyStock);
+                    sqlite.addHistory(userName, tableModel.getValueAt(table.getSelectedRow(), 0).toString(), Integer.parseInt(stockFld.getText()), new Timestamp(new Date().getTime()).toString());
+
+                    sqlite.addLogs("NOTICE", userName, "Purchase Successful", new Timestamp(new Date().getTime()).toString());
+                }     
             }
         }
     }//GEN-LAST:event_purchaseBtnActionPerformed
@@ -218,6 +240,7 @@ public class MgmtProduct extends javax.swing.JPanel {
             System.out.println(priceFld.getText());
 
             sqlite.addProduct(nameFld.getText(), Integer.parseInt(stockFld.getText()), Double.parseDouble(priceFld.getText()));
+            sqlite.addLogs("NOTICE", userName, "Product Added Successfully", new Timestamp(new Date().getTime()).toString());
         }
     }//GEN-LAST:event_addBtnActionPerformed
 
@@ -243,6 +266,7 @@ public class MgmtProduct extends javax.swing.JPanel {
                 System.out.println(priceFld.getText());
 
                 sqlite.editProduct(nameFld.getText(), Integer.parseInt(stockFld.getText()), Double.parseDouble(priceFld.getText()), tableModel.getValueAt(table.getSelectedRow(), 0).toString());
+                sqlite.addLogs("NOTICE", userName, "Product Edited Successfully", new Timestamp(new Date().getTime()).toString());
             }
         }
     }//GEN-LAST:event_editBtnActionPerformed
@@ -255,6 +279,7 @@ public class MgmtProduct extends javax.swing.JPanel {
                 System.out.println(tableModel.getValueAt(table.getSelectedRow(), 0));
 
                 sqlite.removeProduct(tableModel.getValueAt(table.getSelectedRow(), 0).toString());
+                sqlite.addLogs("NOTICE", userName, "Product Deleted Successfully", new Timestamp(new Date().getTime()).toString());
             }
         }
     }//GEN-LAST:event_deleteBtnActionPerformed

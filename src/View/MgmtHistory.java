@@ -54,7 +54,7 @@ public class MgmtHistory extends javax.swing.JPanel {
         for(int nCtr = 0; nCtr < history.size(); nCtr++){
             Product product = sqlite.getProduct(history.get(nCtr).getName());
             if(roleNumber == 2) {
-                if(history.get(nCtr).getUsername().equals(userName)) {
+                if(history.get(nCtr).getUsername().equals(userName) && product != null) {
                 tableModel.addRow(new Object[]{
                     history.get(nCtr).getUsername(), 
                     history.get(nCtr).getName(), 
@@ -66,7 +66,7 @@ public class MgmtHistory extends javax.swing.JPanel {
                 }
             }
 
-            else {
+            else if (roleNumber !=2 && product != null) {
                 tableModel.addRow(new Object[]{
                     history.get(nCtr).getUsername(), 
                     history.get(nCtr).getName(), 

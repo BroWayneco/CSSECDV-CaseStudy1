@@ -256,6 +256,8 @@ public class MgmtUser extends javax.swing.JPanel {
                 System.out.println(password.getText());
                 System.out.println(confpass.getText());
 
+                sqlite.editUserPassword((tableModel.getValueAt(table.getSelectedRow(), 0)).toString(), password.getText());
+
                 sqlite.addLogs("NOTICE", (tableModel.getValueAt(table.getSelectedRow(), 0)).toString(), "Password Changed Successfully", new Timestamp(new Date().getTime()).toString());
             }
         }
